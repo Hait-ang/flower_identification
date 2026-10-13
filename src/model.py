@@ -34,7 +34,7 @@ class flower_identification_model(nn.Module):
             out_channels=384,
             kernel_size=3,
             stride=1,
-            padding=2
+            padding=1
         )
 
         self.conv4 = nn.Conv2d(
@@ -42,7 +42,7 @@ class flower_identification_model(nn.Module):
             out_channels=384,
             kernel_size=3,
             stride=1,
-            padding=2
+            padding=1
         )
 
         self.conv5 = nn.Conv2d(
@@ -50,7 +50,7 @@ class flower_identification_model(nn.Module):
             out_channels=256,
             kernel_size=3,
             stride=1,
-            padding=2
+            padding=1
         )
 
         self.flatten = nn.Flatten()
