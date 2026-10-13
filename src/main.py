@@ -74,7 +74,6 @@ def main():
 
     torch.manual_seed(88)
 
-    batch_size = 32
     learning_rate = 0.0001
     epochs = 20
 
