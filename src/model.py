@@ -53,12 +53,16 @@ class flower_identification_model(nn.Module):
             padding=1
         )
 
+        self.dropout_conv = nn.Dropout2d(p=0.1)
+
         self.flatten = nn.Flatten()
 
         self.fc6 = nn.Linear(
             in_features=9216,
             out_features=4096
         )
+
+        self.dropout_fc = nn.Dropout(p=0.3)
 
         self.fc7 = nn.Linear(
             in_features=4096,
@@ -75,9 +79,9 @@ class flower_identification_model(nn.Module):
         x = self.pool(self.relu(self.conv2(x)))
         x = self.relu(self.conv3(x))
         x = self.relu(self.conv4(x))
-        x = self.pool(self.relu(self.conv5(x)))
+        x = self.pool(self.dropout_conv(self.relu(self.conv5(x))))
         x = self.flatten(x)
-        x = self.relu(self.fc6(x))
-        x = self.relu(self.fc7(x))
+        x = self.dropout_fc(self.relu(self.fc6(x)))
+        x = self.dropout_fc(self.relu(self.fc7(x)))
         x = self.fc8(x)
         return x

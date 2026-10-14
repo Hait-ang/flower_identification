@@ -75,7 +75,7 @@ def main():
     torch.manual_seed(88)
 
     learning_rate = 0.0001
-    epochs = 20
+    epochs = 40
 
     if not torch.cuda.is_available():
         raise RuntimeError("没有检测到 CUDA GPU，请检查算力平台环境。")
@@ -103,6 +103,8 @@ def main():
 
     best_val_accuracy = -1.0
     best_epoch = 0
+    bad_epoch = 0
+    patience = 7
 
     for epoch in range(1, epochs + 1):
 
@@ -121,7 +123,7 @@ def main():
         val_accuracies.append(val_acc)
 
         print(
-            f"Epoch {epoch}/{epochs} | "
+            f"Epoch {epoch} | "
             f"Train Loss: {train_loss:.4f} | "
             f"Train Acc: {train_acc:.2f}% | "
             f"Val Loss: {val_loss:.4f} | "
@@ -133,11 +135,18 @@ def main():
 
             best_val_accuracy = val_acc
             best_epoch = epoch
+            bad_epoch = 0
 
             torch.save(
                 model.state_dict(),
                 output_dir / "best_model.pth"
             )
+        else:
+            bad_epoch += 1
+
+            if bad_epoch == patience:
+                print(f"epoch = {epoch}")
+                break
 
     with (output_dir / "history.csv").open(
         "w", newline="", encoding="utf-8"
@@ -153,7 +162,7 @@ def main():
             "val_accuracy"
         ])
 
-        for i in range(epochs):
+        for i in range(epoch):
             writer.writerow([
                 i + 1,
                 train_losses[i],
@@ -163,30 +172,25 @@ def main():
             ])
 
     plt.figure(figsize=(8, 5))
-
-    plt.plot(
-        range(1, epochs + 1),
-        train_accuracies,
-        label="Train Accuracy"
-    )
-
-    plt.plot(
-        range(1, epochs + 1),
-        val_accuracies,
-        label="Validation Accuracy"
-    )
-
+    plt.plot(range(1, epoch + 1), train_accuracies, label="Train Accuracy")
+    plt.plot(range(1, epoch + 1), val_accuracies, label="Validation Accuracy")
     plt.xlabel("Epoch")
     plt.ylabel("Accuracy (%)")
     plt.title("Flower CNN Accuracy")
     plt.legend()
     plt.grid(True)
+    plt.savefig(output_dir / "accuracy_curve.png", dpi=150)
+    plt.close()
 
-    plt.savefig(
-        output_dir / "accuracy_curve.png",
-        dpi=150
-    )
-
+    plt.figure(figsize=(8, 5))
+    plt.plot(range(1, epoch + 1), train_losses, label="Train Loss")
+    plt.plot(range(1, epoch + 1), val_losses, label="Validation Loss")
+    plt.xlabel("Epoch")
+    plt.ylabel("Cross-Entropy Loss")
+    plt.title("Flower CNN Loss")
+    plt.legend()
+    plt.grid(True)
+    plt.savefig(output_dir / "loss_curve.png", dpi=150)
     plt.close()
 
     model.load_state_dict(
