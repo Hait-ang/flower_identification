@@ -1,21 +1,18 @@
-__pycache__/
-*.pyc
-
-.venv/
-venv/
-.conda/
-
-.vscode/
-
-.env
-.env.*
-
-data/flower/
-data/quarantine/
-
-outputs/
+# 模型权重
 *.pth
 *.pt
 *.ckpt
 
-*.log
+# Python 缓存
+__pycache__/
+*.pyc
+
+# 图片数据集
+data/flower/
+data/quarantine/
+
+# 虚拟环境
+.venv/
+venv/
+
+.vscode/
