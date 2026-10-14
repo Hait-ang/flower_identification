@@ -1,5 +1,7 @@
 - 本题学习大部分由**ChatGPT 辅助完成**，另外还观看了观看**B 站、Youtube 的相关视频**。
-- ChatGPT 对话链接：
+- ChatGPT 对话链接：https://chatgpt.com/share/6acf1ba6-1610-83ee-99ce-0d0ec6d767e1
+- B站视频：李沐有关如何读论文、Alex 论文的视频。
+- YouTube视频：3Blue1Brown的Deep Learning系列全视频。
 - 笔记绝大部分均为**小登古法制作**，**除Markdown公式和图片外**，无任何复制粘贴。
 
 
